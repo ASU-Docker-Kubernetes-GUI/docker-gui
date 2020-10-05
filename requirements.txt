@@ -1,5 +1,4 @@
 Flask~=1.1.2
-python_dotenv
 docker~=4.3.1
 kubernetes~=11.0.0
 Werkzeug~=1.0.1
