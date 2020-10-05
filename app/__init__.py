@@ -1,5 +1,6 @@
 from flask import Flask
 from app.routers import client_router, service_router
+from app.middlewares import logging_middleware
 import logging
 
 
@@ -21,4 +22,8 @@ def create_application():
     app.register_blueprint(client_router.client_router, url_prefix="")
     app.register_blueprint(service_router.service_router, url_prefix="/api/v1")
 
+    # Adding middlewares
+    app.wsgi_app = logging_middleware.LoggingMiddleware(app.wsgi_app)
+
+    logging.info('App is done being built')
     return app
