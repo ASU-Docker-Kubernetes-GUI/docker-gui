@@ -1,5 +1,6 @@
 from flask import Blueprint, request, jsonify
 from app.handlers import service_handler as handler
+import logging
 
 """
 service_router.py renders all of the backend routes that we are exposing in our
@@ -23,16 +24,19 @@ service_router = Blueprint(
 @service_router.route('/')
 @service_router.route('/ping')
 def service_healthcheck():
+    logging.info('calling service_healthcheck')
     return jsonify(handler.handle_healthcheck())
 
 
 @service_router.route('/docker-status')
 def docker_healthcheck():
+    logging.info('calling docker_healthcheck')
     return jsonify(handler.handle_docker_healthcheck())
 
 
 @service_router.route('/create', methods=["POST"])
 def service_create_docker_container():
+    logging.info('calling service_create_docker_container')
     message = {}
 
     if request.method == "POST":
@@ -49,6 +53,7 @@ def service_create_docker_container():
 
 @service_router.route('/containers', methods=["GET"])
 def service_get_running_containers():
+    logging.info('calling service_get_running_containers')
     return handler.handle_get_running_containers()
 
 
