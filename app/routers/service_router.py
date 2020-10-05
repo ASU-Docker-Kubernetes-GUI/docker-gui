@@ -20,6 +20,9 @@ service_router = Blueprint(
 @service_router.route('/')
 @service_router.route('/ping')
 def service_healthcheck():
+    """
+    service_healthcheck is a ping that immediately returns an OK
+    """
     logging.info('calling service_healthcheck')
     return jsonify(handler.handle_healthcheck())
 
