@@ -8,12 +8,6 @@ application.
 All of these routes will be prefixed with `/api/v1/`, followed by the route
 These routes are as follows:
 
-/create (create a container)
-/update/{id} (update a specific container)
-/run/{id} (run a specific container)
-/logs/{id} (get the logs for a specific container)
-/stop/{id} (stop a container)
-/delete/{id} (delete a specific container)
 /pull (pull a container) POST request
 /settings (get the settings)
 /settings (post a new setting)
@@ -39,10 +33,18 @@ def docker_healthcheck():
 
 @service_router.route('/create', methods=["POST"])
 def service_create_docker_container():
+    message = {}
+
     if request.method == "POST":
-        return "Docker container created!"
+        image_tag = request.args.get('image')
+        success = handler.handle_create_container(image_tag)
+
+        message["success"] = success
+        message["message"] = "created container successfully" if success else "failed to create"
+
     else:
-        return "this is an error"
+        message["message"] = "there was an error"
+    return jsonify(message)
 
 
 @service_router.route('/containers', methods=["GET"])
@@ -60,6 +62,22 @@ def service_stop_container(container_id):
     return jsonify(handler.handle_stop_container(container_id))
 
 
-@service_router.route('/start/<container_id>', method=["GET"])
+@service_router.route('/start/<container_id>', methods=["GET"])
 def service_start_container(container_id):
     return jsonify(handler.handle_start_container(container_id))
+
+
+@service_router.route('/delete/<container_id>', methods=["DELETE"])
+def service_remove_container(container_id):
+    if container_id is None:
+        return {
+            "message": "invalid container id"
+        }
+
+    success = handler.handle_remove_container(container_id)
+
+    return {
+        "message":
+            "successfully removed {}".format(container_id) if success else "unable to remove container"
+    }
+

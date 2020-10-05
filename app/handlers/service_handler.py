@@ -50,3 +50,14 @@ def handle_stop_container(container_id):
         return {"message": "invalid container id"}
     return _client.stop_container(container_id)
 
+
+def handle_start_container(container_id):
+    return 'boop!'
+
+
+def handle_create_container(image_tag):
+    return True
+
+
+def handle_remove_container(container_id):
+    return True
