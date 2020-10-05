@@ -14,5 +14,8 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Build the Docker image
+    - name: Build Dockernetes image
       run: docker build . --file Dockerfile --tag dockernetes:$(date +%s)
+      id: dockernetes:$(date +%s)
+      
+        

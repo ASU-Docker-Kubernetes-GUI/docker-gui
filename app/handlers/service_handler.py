@@ -19,10 +19,20 @@ def handle_healthcheck():
 
 
 def handle_docker_healthcheck():
-    return {
-        "status": _client.get_info(),
-        "systemTime": datetime.datetime.now()
-    }
+    payload = dict()
+
+    if _client is not None:
+        status = _client.get_info()
+        payload["status"] = "UP" if status is not None else "DOWN"
+        try:
+            payload["containerCount"] = status["containers"]
+            # TODO: Add more logging items here as needed
+        except Exception:
+            pass
+
+    payload["systemTime"] = datetime.datetime.now()
+
+    return dict(payload)
 
 
 def handle_get_running_containers():

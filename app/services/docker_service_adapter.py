@@ -2,10 +2,15 @@ import docker
 
 
 class DockerServiceAdapter:
+    """
+    DockerServiceAdapter consumers the Docker Client API. The client API that
+    this class uses the official Docker API.
+    """
 
     def __init__(self):
-        # Client is private, should not be called
-        # Any consuming class
+        """
+        The client reads the Docker environment from the user's local config
+        """
         self._client = docker.client.from_env()
 
     def get_info(self):
